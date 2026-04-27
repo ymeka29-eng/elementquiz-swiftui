@@ -1,0 +1,104 @@
+import SwiftUI
+
+struct ContentView: View {
+    
+    // MARK: - Quiz Data
+    
+    // Array of element names.
+    // These should match image asset names in Assets.xcassets
+    let elementList = ["Carbon", "Gold", "Chlorine", "Sodium"]
+    
+    
+    // MARK: - State
+    
+    // Keeps track of which element we're showing.
+    @State private var currentElementIndex = 0
+    
+    // Stores whether the answer should be visible.
+    @State private var isAnswerVisible = false
+    
+    
+    // MARK: - Computed Properties
+    
+    // Computed properties help avoid repeating code.
+    // This always returns the current element.
+    var currentElement: String {
+        elementList[currentElementIndex]
+    }
+    
+    
+    // MARK: - UI
+    
+    var body: some View {
+        
+        // VStack = Vertical Stack
+        // Places views from top to bottom
+        VStack {
+            
+            Spacer()
+            
+            // Equivalent to UIImageView
+            Image(currentElement)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 140, height: 140)
+            
+            
+            Spacer()
+            
+            // Equivalent to UILabel
+            Text(isAnswerVisible ? currentElement : "?")
+                .font(.system(size: 24, weight: .bold))
+            
+            
+            Spacer()
+            
+            // HStack = Horizontal Stack
+            // Places views side by side
+            HStack(spacing: 40) {
+                
+                // Equivalent to UIButton + IBAction
+                Button("Show Answer") {
+                    revealAnswer()
+                }
+                
+                Button("Next Element") {
+                    nextElement()
+                }
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+    
+    
+    // MARK: - Actions
+    
+    // Same idea as @IBAction showAnswer
+    func revealAnswer() {
+        isAnswerVisible = true
+    }
+    
+    
+    // Same idea as @IBAction next
+    func nextElement() {
+        
+        // Move to next element
+        currentElementIndex += 1
+        
+        // Loop back to beginning when reaching the end
+        if currentElementIndex >= elementList.count {
+            currentElementIndex = 0
+        }
+        
+        // Hide answer for next question
+        isAnswerVisible = false
+    }
+}
+
+
+// Preview in Xcode canvas
+#Preview {
+    ContentView()
+}
